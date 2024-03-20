@@ -1,18 +1,11 @@
+![banner](.github/assets/logo.png)
 
-<div style="text-align:center; padding: 20px 20px 0;">
-
-<img src=".github/assets/logo.png"  alt=""/>
-
-<p><b>Lightweight plugin for enabling packet encryption on offline servers</b></p>
-
-<img src="https://img.shields.io/github/license/pesekjak/crypt4offline?style=for-the-badge&color=107185" alt="LICENSE">
-<img src="https://img.shields.io/github/v/release/pesekjak/crypt4offline?style=for-the-badge&color=edb228" alt="RELEASE">
-<img src="https://img.shields.io/badge/supports-1.7%20—%201.20.4-8A2BE2?style=for-the-badge&color=0f9418" alt="SUPPORTS">
-
-</div>
+<p align="center"><b>Lightweight plugin for enabling packet encryption on offline servers</b></p>
 
 <p align="center">
-    
+    <img src="https://img.shields.io/github/license/pesekjak/crypt4offline?style=for-the-badge&color=107185" alt="LICENSE">
+    <img src="https://img.shields.io/github/v/release/pesekjak/crypt4offline?style=for-the-badge&color=edb228" alt="RELEASE">
+    <img src="https://img.shields.io/badge/supports-1.7%20—%201.20.4-8A2BE2?style=for-the-badge&color=0f9418" alt="SUPPORTS">
 </p>
 
 ---
@@ -36,4 +29,4 @@ copy of the game and cracked accounts on servers operating with online mode turn
 ### License
 Crypt4Offline is free software licensed under the [MIT license](LICENSE).
 
-Portions of this code were adapted from [PaperMC/Velocity](ttps://github.com/PaperMC/Velocity), licensed under the [GPL 3.0](VELOCITY_LICENSE)
+Portions of this code were adapted from [PaperMC/Velocity](ttps://github.com/PaperMC/Velocity), licensed under the [GPL 3.0](VELOCITY_LICENSE).
