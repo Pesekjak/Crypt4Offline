@@ -29,4 +29,4 @@ copy of the game and cracked accounts on servers operating with online mode turn
 ### License
 Crypt4Offline is free software licensed under the [MIT license](LICENSE).
 
-Portions of this code were adapted from [PaperMC/Velocity](ttps://github.com/PaperMC/Velocity), licensed under the [GPL 3.0](VELOCITY_LICENSE).
+Portions of this code were adapted from [PaperMC/Velocity](https://github.com/PaperMC/Velocity), licensed under the [GPL 3.0](VELOCITY_LICENSE).
