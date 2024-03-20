@@ -1,6 +1,5 @@
 package com.velocitypowered.proxy.connection.client;
 
-import com.google.common.base.Preconditions;
 import com.google.common.primitives.Longs;
 import com.velocitypowered.api.event.connection.PreLoginEvent;
 import com.velocitypowered.api.network.ProtocolVersion;
@@ -22,6 +21,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.net.InetSocketAddress;
 import java.net.URI;
+import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.security.GeneralSecurityException;
@@ -36,6 +36,25 @@ import static com.velocitypowered.proxy.connection.VelocityConstants.EMPTY_BYTE_
 import static com.velocitypowered.proxy.crypto.EncryptionUtils.decryptRsa;
 import static com.velocitypowered.proxy.crypto.EncryptionUtils.generateServerId;
 
+/*
+ * Copyright (C) 2018-2023 Velocity Contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+// Portions of this code were adapted from PaperMC/Velocity, licensed under the GPL 3.0
+// Original Source: https://github.com/PaperMC/Velocity
 public class C4O$InitialLoginSessionHandler extends InitialLoginSessionHandler {
 
     private static final Logger logger = LogManager.getLogger(InitialLoginSessionHandler.class);
@@ -55,9 +74,9 @@ public class C4O$InitialLoginSessionHandler extends InitialLoginSessionHandler {
     C4O$InitialLoginSessionHandler(VelocityServer server, MinecraftConnection mcConnection,
                                    LoginInboundConnection inbound) {
         super(server, mcConnection, inbound);
-        this.server = Preconditions.checkNotNull(server, "server");
-        this.mcConnection = Preconditions.checkNotNull(mcConnection, "mcConnection");
-        this.inbound = Preconditions.checkNotNull(inbound, "inbound");
+        this.server = server;
+        this.mcConnection = mcConnection;
+        this.inbound = inbound;
         this.forceKeyAuthentication = System.getProperties().containsKey("auth.forceSecureProfiles")
                 ? Boolean.getBoolean("auth.forceSecureProfiles")
                 : server.getConfiguration().isForceKeyAuthentication();
@@ -96,7 +115,7 @@ public class C4O$InitialLoginSessionHandler extends InitialLoginSessionHandler {
         inbound.setPlayerKey(playerKey);
         this.login = packet;
 
-        PreLoginEvent event = new PreLoginEvent(inbound, login.getUsername());
+        PreLoginEvent event = new PreLoginEvent(inbound, login.getUsername(), login.getHolderUuid());
         server.getEventManager().fire(event).thenRunAsync(() -> {
             if (mcConnection.isClosed()) {
                 // The player was disconnected
@@ -183,7 +202,8 @@ public class C4O$InitialLoginSessionHandler extends InitialLoginSessionHandler {
                             server.getVersion().getName() + "/" + server.getVersion().getVersion())
                     .uri(URI.create(url))
                     .build();
-            server.getHttpClient().sendAsync(httpRequest, HttpResponse.BodyHandlers.ofString())
+            final HttpClient httpClient = server.createHttpClient();
+            httpClient.sendAsync(httpRequest, HttpResponse.BodyHandlers.ofString())
                     .whenCompleteAsync((response, throwable) -> {
                         if (mcConnection.isClosed()) {
                             // The player disconnected after we authenticated them.
@@ -216,7 +236,18 @@ public class C4O$InitialLoginSessionHandler extends InitialLoginSessionHandler {
                         // All went well, initialize the session. C4O always initializes the handler
                         mcConnection.setActiveSessionHandler(StateRegistry.LOGIN, new AuthSessionHandler(server, inbound, profile, false));
 
-                    }, mcConnection.eventLoop());
+                    }, mcConnection.eventLoop())
+                    .thenRun(() -> {
+                        if (httpClient instanceof final AutoCloseable closeable) {
+                            try {
+                                closeable.close();
+                            } catch (Exception e) {
+                                // In Java 21, the HttpClient does not throw any Exception
+                                // when trying to clean its resources, so this should not happen
+                                logger.error("An unknown error occurred while trying to close an HttpClient", e);
+                            }
+                        }
+                    });
         } catch (GeneralSecurityException e) {
             logger.error("Unable to enable encryption", e);
             mcConnection.close(true);

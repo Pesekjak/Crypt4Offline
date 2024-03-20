@@ -17,7 +17,7 @@ import java.util.List;
 @Plugin(
         id = "crypt4offline",
         name = "Crypt4Offline",
-        version = "1.0",
+        version = "1.0.1",
         description = "Plugin that enables encryption for servers in offline mode",
         authors = "pesekjak"
 )
@@ -32,7 +32,7 @@ public class Crypt4Offline {
         this.server = (VelocityServer) server;
 
         if (server.getConfiguration().isOnlineMode()) {
-            logger.warn("Server is running in online mode");
+            logger.warn("Server is running in online mode, no changes will be applied");
             return;
         }
 
@@ -61,6 +61,7 @@ public class Crypt4Offline {
             connectionManager = getConnectionManager(server);
         } catch (Exception exception) {
             logger.error("Failed to access server's connection manager");
+            return;
         }
 
         try {

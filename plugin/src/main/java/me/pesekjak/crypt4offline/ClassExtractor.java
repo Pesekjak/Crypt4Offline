@@ -1,8 +1,6 @@
 package me.pesekjak.crypt4offline;
 
 import com.google.common.collect.Iterators;
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassWriter;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,11 +10,6 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 public class ClassExtractor {
-
-    public static byte[] getBytes(byte[] fileData) {
-        ClassWriter writer = new ClassWriter(new ClassReader(fileData), ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
-        return writer.toByteArray();
-    }
 
     public static List<byte[]> getClasses(File file, String basePackage) throws IOException {
         basePackage = basePackage.replace('.', '/') + "/";
