@@ -14,6 +14,7 @@ import com.velocitypowered.proxy.protocol.packet.EncryptionRequestPacket;
 import com.velocitypowered.proxy.protocol.packet.EncryptionResponsePacket;
 import com.velocitypowered.proxy.protocol.packet.LoginPluginResponsePacket;
 import com.velocitypowered.proxy.protocol.packet.ServerLoginPacket;
+import com.velocitypowered.proxy.util.VelocityProperties;
 import io.netty.buffer.ByteBuf;
 import net.kyori.adventure.text.Component;
 import org.apache.logging.log4j.LogManager;
@@ -77,9 +78,9 @@ public class C4O$InitialLoginSessionHandler extends InitialLoginSessionHandler {
         this.server = server;
         this.mcConnection = mcConnection;
         this.inbound = inbound;
-        this.forceKeyAuthentication = System.getProperties().containsKey("auth.forceSecureProfiles")
-                ? Boolean.getBoolean("auth.forceSecureProfiles")
-                : server.getConfiguration().isForceKeyAuthentication();
+        this.forceKeyAuthentication = VelocityProperties.readBoolean(
+                "auth.forceSecureProfiles", server.getConfiguration().isForceKeyAuthentication()
+        );
     }
 
     @Override

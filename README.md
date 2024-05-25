@@ -5,13 +5,13 @@
 <p align="center">
     <img src="https://img.shields.io/github/license/pesekjak/crypt4offline?style=for-the-badge&color=107185" alt="LICENSE">
     <img src="https://img.shields.io/github/v/release/pesekjak/crypt4offline?style=for-the-badge&color=edb228" alt="RELEASE">
-    <img src="https://img.shields.io/badge/supports-1.7%20—%201.20.4-8A2BE2?style=for-the-badge&color=0f9418" alt="SUPPORTS">
+    <img src="https://img.shields.io/badge/supports-1.7%20—%201.20.6-8A2BE2?style=for-the-badge&color=0f9418" alt="SUPPORTS">
 </p>
 
 ---
 
 **Crypt4Offline** is a lightweight plugin for Velocity proxy servers that enables packet encryption for offline servers.
-All versions ranging from 1.7 to 1.20.4 are supported and the plugin is made future-proof to work on future versions as well.
+All versions ranging from 1.7 to 1.20.6 are supported and the plugin is made future-proof to work on future versions as well.
 
 In addition to encryption, the plugin also enables the player heads visual for the server player list.
 

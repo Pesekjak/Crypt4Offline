@@ -8,5 +8,5 @@ repositories {
 
 dependencies {
     annotationProcessor(libs.velocity.api)
-    compileOnly(files("../libs/velocity-3.3.0-SNAPSHOT-371.jar"))
+    compileOnly(files("../libs/velocity-3.3.0-SNAPSHOT-392.jar"))
 }

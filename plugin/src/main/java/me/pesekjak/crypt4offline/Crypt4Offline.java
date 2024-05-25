@@ -17,7 +17,7 @@ import java.util.List;
 @Plugin(
         id = "crypt4offline",
         name = "Crypt4Offline",
-        version = "1.0.1",
+        version = "1.0.2",
         description = "Plugin that enables encryption for servers in offline mode",
         authors = "pesekjak"
 )
